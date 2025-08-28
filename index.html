@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* Cambiado a min-height */
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
@@ -72,9 +72,9 @@
             flex: 1;
         }
         #blog-section {
-            height: 80vh;
-            overflow-y: auto;
-            padding-right: 15px;
+            height: 80vh; /* Altura fija para la sección del blog */
+            overflow-y: auto; /* Permite desplazamiento vertical */
+            padding-right: 15px; /* Evita que el contenido se pegue a la barra */
         }
         #feed {
             margin-top: 20px;
@@ -132,7 +132,7 @@
             gap: 10px;
             margin-top: 10px;
         }
-        .reply-btn, .like-btn, .reply-btn:hover {
+        .reply-btn, .reply-btn:hover {
             background: none;
             border: none;
             color: #007bff;
@@ -140,12 +140,6 @@
             font-size: 0.9em;
             padding: 0;
             width: auto;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .like-btn.liked {
-            color: #e0245e;
         }
         .reply-section {
             display: none;
@@ -257,23 +251,9 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    
     <script>
-        // ----------------------
-        // CÓDIGO DE CONFIGURACIÓN DE FIREBASE
-        // Pega tu objeto de configuración aquí
-        const firebaseConfig = {
-            // ... (Tu configuración personal de Firebase) ...
-        };
-        // ----------------------
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const postsRef = db.ref('posts');
-
         document.addEventListener('DOMContentLoaded', () => {
+            // Elementos del DOM
             const loginSection = document.getElementById('login-section');
             const blogSection = document.getElementById('blog-section');
             const loginBtn = document.getElementById('login-btn');
@@ -292,13 +272,17 @@
             const profilePhotoUpload = document.getElementById('profile-photo-upload');
             const uploadProfileBtn = document.getElementById('upload-profile-btn');
 
+            // Constantes
             const PHOTO_COST = 50;
             const COINS_PER_POSTS = 100;
             const POSTS_FOR_REWARD = 5;
             const DEFAULT_PROFILE_PHOTO = 'https://via.placeholder.com/100';
 
+            // Funciones del localStorage
             const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
             const getUsers = () => JSON.parse(localStorage.getItem('users')) || {};
+            const savePosts = (posts) => localStorage.setItem('posts', JSON.stringify(posts));
+            const getPosts = () => JSON.parse(localStorage.getItem('posts')) || [];
             const getCurrentUser = () => localStorage.getItem('currentUser');
             const setCurrentUser = (user) => localStorage.setItem('currentUser', user);
             const getUserData = (username) => {
@@ -319,18 +303,8 @@
                 }
             };
 
-            // Escuchar cambios en la base de datos para renderizar en tiempo real
-            postsRef.on('value', (snapshot) => {
-                const posts = [];
-                snapshot.forEach((childSnapshot) => {
-                    const post = childSnapshot.val();
-                    post.id = childSnapshot.key;
-                    posts.push(post);
-                });
-                renderPosts(posts);
-            });
-
-            const renderPosts = (posts) => {
+            const renderPosts = () => {
+                const posts = getPosts();
                 const currentUser = getCurrentUser();
                 feed.innerHTML = '';
                 posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -340,9 +314,6 @@
                     const isAuthor = post.user === currentUser;
                     const userData = getUserData(post.user);
                     const profilePhotoURL = userData ? userData.profilePhoto : DEFAULT_PROFILE_PHOTO;
-                    const likesCount = post.likes ? Object.keys(post.likes).length : 0;
-                    const isLikedByCurrentUser = post.likes && post.likes[currentUser];
-                    
                     postDiv.innerHTML = `
                         <h3>
                             <img src="${profilePhotoURL}" alt="Foto de perfil de ${post.user}" class="profile-photo-sm">
@@ -353,10 +324,6 @@
                         ${post.image ? `<img src="${post.image}" alt="Imagen del post">` : ''}
                         <div class="actions">
                             <button class="reply-btn" data-post-id="${post.id}">Responder</button>
-                            <button class="like-btn ${isLikedByCurrentUser ? 'liked' : ''}" data-post-id="${post.id}">
-                                <i class="fas fa-heart"></i>
-                                <span>${likesCount}</span>
-                            </button>
                             ${isAuthor ? `<button class="delete-btn" data-post-id="${post.id}"><i class="fas fa-trash-alt"></i></button>` : ''}
                         </div>
                         <div class="reply-section" id="reply-section-${post.id}">
@@ -377,16 +344,15 @@
                 replies.forEach(reply => {
                     const replyDiv = document.createElement('div');
                     replyDiv.classList.add('reply');
-                    const userData = getUserData(reply.user);
-                    const profilePhotoURL = userData ? userData.profilePhoto : DEFAULT_PROFILE_PHOTO;
                     replyDiv.innerHTML = `
-                        <h4><img src="${profilePhotoURL}" alt="Foto de perfil de ${reply.user}" class="profile-photo-sm"> En respuesta por: ${reply.user}</h4>
+                        <h4>En respuesta por: ${reply.user}</h4>
                         <p>${reply.content}</p>
                     `;
                     repliesContainer.appendChild(replyDiv);
                 });
             };
 
+            // Manejadores de eventos
             uploadProfileBtn.addEventListener('click', () => {
                 profilePhotoUpload.click();
             });
@@ -412,6 +378,7 @@
                     loginSection.classList.remove('active');
                     blogSection.classList.add('active');
                     updateBalanceDisplay();
+                    renderPosts();
                 } else {
                     alert('Nombre de usuario o contraseña incorrectos.');
                 }
@@ -453,13 +420,10 @@
                         const users = getUsers();
                         delete users[currentUser];
                         saveUsers(users);
-                        
-                        const userPostsRef = postsRef.orderByChild('user').equalTo(currentUser);
-                        userPostsRef.once('value', (snapshot) => {
-                             snapshot.forEach((child) => {
-                                 child.ref.remove();
-                             });
-                        });
+
+                        let posts = getPosts();
+                        posts = posts.filter(post => post.user !== currentUser);
+                        savePosts(posts);
 
                         localStorage.removeItem('currentUser');
                         loginSection.classList.add('active');
@@ -476,33 +440,29 @@
                     alert('Por favor, escribe algo para publicar.');
                     return;
                 }
+                const posts = getPosts();
                 const newPost = {
+                    id: Date.now(),
                     user,
                     content,
                     image: null,
                     timestamp: new Date().toISOString(),
-                    likes: {}, // Inicializa el objeto de likes
-                    replies: {}
+                    replies: []
                 };
-                
-                postsRef.push(newPost)
-                .then(() => {
-                    postContentTextarea.value = '';
-                    let userData = getUserData(user);
-                    userData.postCount = (userData.postCount || 0) + 1;
-                    if (userData.postCount % POSTS_FOR_REWARD === 0) {
-                        userData.coins += COINS_PER_POSTS;
-                        alert(`¡Felicidades! Has hecho ${userData.postCount} publicaciones y has ganado ${COINS_PER_POSTS} monedas.`);
-                    }
-                    saveUserData(user, userData);
-                    updateBalanceDisplay();
-                })
-                .catch(error => {
-                    console.error("Error al publicar: ", error);
-                    alert("Ocurrió un error al publicar el mensaje.");
-                });
+                posts.push(newPost);
+                savePosts(posts);
+                postContentTextarea.value = '';
+                let userData = getUserData(user);
+                userData.postCount = (userData.postCount || 0) + 1;
+                if (userData.postCount % POSTS_FOR_REWARD === 0) {
+                    userData.coins += COINS_PER_POSTS;
+                    alert(`¡Felicidades! Has hecho ${userData.postCount} publicaciones y has ganado ${COINS_PER_POSTS} monedas.`);
+                }
+                saveUserData(user, userData);
+                updateBalanceDisplay();
+                renderPosts();
             });
-
+            
             imageUploadBtn.addEventListener('click', () => {
                 imageUploadInput.click();
             });
@@ -520,26 +480,22 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imageData = e.target.result;
+                    const posts = getPosts();
                     const newPost = {
+                        id: Date.now(),
                         user,
                         content: '',
                         image: imageData,
                         timestamp: new Date().toISOString(),
-                        likes: {}, // Inicializa el objeto de likes
-                        replies: {}
+                        replies: []
                     };
-
-                    postsRef.push(newPost)
-                    .then(() => {
-                        userData.coins -= PHOTO_COST;
-                        saveUserData(user, userData);
-                        updateBalanceDisplay();
-                        imageUploadInput.value = '';
-                    })
-                    .catch(error => {
-                        console.error("Error al subir la imagen: ", error);
-                        alert("Ocurrió un error al subir la imagen.");
-                    });
+                    posts.push(newPost);
+                    savePosts(posts);
+                    userData.coins -= PHOTO_COST;
+                    saveUserData(user, userData);
+                    updateBalanceDisplay();
+                    renderPosts();
+                    imageUploadInput.value = '';
                 };
                 reader.readAsDataURL(file);
             });
@@ -547,7 +503,7 @@
             feed.addEventListener('click', (event) => {
                 const target = event.target.closest('button');
                 if (!target) return;
-                const postId = target.dataset.postId;
+                const postId = parseInt(target.dataset.postId);
                 if (target.classList.contains('delete-btn')) {
                     if (confirm('¿Estás seguro de que quieres eliminar este mensaje?')) {
                         deletePost(postId);
@@ -556,38 +512,14 @@
                     toggleReplySection(postId);
                 } else if (target.classList.contains('submit-reply-btn')) {
                     submitReply(postId);
-                } else if (target.classList.contains('like-btn')) {
-                    toggleLike(postId);
                 }
             });
 
-            const toggleLike = (postId) => {
-                const currentUser = getCurrentUser();
-                if (!currentUser) return;
-
-                const postRef = db.ref(`posts/${postId}/likes/${currentUser}`);
-
-                postRef.once('value', snapshot => {
-                    if (snapshot.exists()) {
-                        // El usuario ya dio like, ahora lo quitamos
-                        postRef.remove();
-                    } else {
-                        // El usuario no ha dado like, lo añadimos
-                        postRef.set(true);
-                    }
-                });
-            };
-            
             const deletePost = (postId) => {
-                const postToDeleteRef = db.ref(`posts/${postId}`);
-                postToDeleteRef.remove()
-                .then(() => {
-                    console.log("Post eliminado con éxito.");
-                })
-                .catch(error => {
-                    console.error("Error al eliminar el post: ", error);
-                    alert("Ocurrió un error al eliminar el mensaje.");
-                });
+                let posts = getPosts();
+                posts = posts.filter(post => post.id !== postId);
+                savePosts(posts);
+                renderPosts();
             };
 
             const toggleReplySection = (postId) => {
@@ -602,22 +534,20 @@
                 const replyContent = replyTextarea.value.trim();
                 const user = getCurrentUser();
                 if (replyContent && user) {
-                    const repliesRef = db.ref(`posts/${postId}/replies`);
-                    const newReply = {
-                        user,
-                        content: replyContent,
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    repliesRef.push(newReply)
-                    .then(() => {
+                    const posts = getPosts();
+                    const postToReply = posts.find(post => post.id === postId);
+                    if (postToReply) {
+                        const newReply = {
+                            user,
+                            content: replyContent,
+                            timestamp: new Date().toISOString()
+                        };
+                        postToReply.replies = postToReply.replies || [];
+                        postToReply.replies.push(newReply);
+                        savePosts(posts);
+                        renderPosts();
                         replyTextarea.value = '';
-                        console.log("Respuesta enviada con éxito.");
-                    })
-                    .catch(error => {
-                        console.error("Error al enviar la respuesta: ", error);
-                        alert("Ocurrió un error al enviar la respuesta.");
-                    });
+                    }
                 } else {
                     alert('Por favor, escribe algo para responder.');
                 }
@@ -628,6 +558,7 @@
                 loginSection.classList.remove('active');
                 blogSection.classList.add('active');
                 updateBalanceDisplay();
+                renderPosts();
             }
         });
     </script>
