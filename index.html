@@ -3,563 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Blog Simple</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Anuncios Creativos</title>
     <style>
+        /* Estilos generales y de tipografía */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Cambiado a min-height */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #dba88b; /* Fondo de la página: Pastel Fire */
+            color: #ffffff; /* Todo el texto es blanco */
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
         }
-        #login-section, #blog-section {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-        }
-        #login-section.active, #blog-section.active {
-            display: flex;
+        .contenedor-anuncios {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
         h1 {
+            color: #ffffff;
             text-align: center;
-            color: #333;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 300;
         }
-        input, textarea, button {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+        p {
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Estilos de los anuncios */
+        .anuncio-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .anuncio {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 4px; /* EL PADDING ES EL ESPACIO QUE SOBRA DESDE LA IMAGEN HASTA EL ANUNCIO  */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
             box-sizing: border-box;
+            background-color: #b36e41; /* Fondo de los anuncios: Raw Sienna */
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+        .anuncio:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #logout-btn, #register-btn, #delete-account-btn {
-            background-color: #6c757d;
-        }
-        #logout-btn:hover, #register-btn:hover, #delete-account-btn:hover {
-            background-color: #5a6268;
-        }
-        #login-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        #login-buttons button {
-            flex: 1;
-        }
-        #blog-section {
-            height: 80vh; /* Altura fija para la sección del blog */
-            overflow-y: auto; /* Permite desplazamiento vertical */
-            padding-right: 15px; /* Evita que el contenido se pegue a la barra */
-        }
-        #feed {
-            margin-top: 20px;
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .post {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            position: relative;
-        }
-        .post h3 {
+        .anuncio h2 {
+            color: #ffffff;
             margin-top: 0;
-            color: #555;
-            font-size: 1em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 1.5em;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
-        .post h3 span {
-            font-size: 0.8em;
-            color: #888;
+
+        /* Estilos para la imagen del anuncio */
+        .imagen-anuncio {
+            width: 100%; /* abajo de esta linea iria  height: 200px;  */
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
         }
-        .post p {
-            margin-bottom: 0;
-            white-space: pre-wrap;
-        }
-        .post img {
-            max-width: 100%;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-size: 1em;
-            transition: color 0.3s;
-            padding: 0;
-            width: auto;
-        }
-        .delete-btn:hover {
-            color: #c82333;
-        }
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .reply-btn, .reply-btn:hover {
-            background: none;
-            border: none;
-            color: #007bff;
-            cursor: pointer;
-            font-size: 0.9em;
-            padding: 0;
-            width: auto;
-        }
-        .reply-section {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
-        .reply-section.active {
-            display: flex;
-        }
-        .replies {
-            margin-top: 10px;
-            padding-left: 20px;
-            border-left: 2px solid #ccc;
-        }
-        .reply {
-            background-color: #fafafa;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        .reply h4 {
-            font-size: 0.9em;
-            color: #777;
-            margin: 0 0 5px 0;
-        }
-        .reply p {
-            font-size: 0.9em;
-            margin: 0;
-        }
-        #post-options {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        #post-options button {
-            flex: 1;
-        }
-        #image-upload-btn {
-            background-color: #28a745;
-            width: auto;
-        }
-        #image-upload-btn:hover {
-            background-color: #218838;
-        }
-        #balance-display {
-            font-size: 1em;
-            font-weight: bold;
-            color: #007bff;
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        #profile-photo-container {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        #profile-photo-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .imagen-anuncio img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 2px solid #ddd;
-            margin-bottom: 5px;
         }
-        .profile-photo-sm {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
+        
+        /* Estilos del temporizador */
+        .temporizador {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: auto;
+            text-align: right;
+        }
+        .terminado {
+            color: #ff3e34; /* Flaming */
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        /* Estilos para mostrar la fecha de finalización */
+        .fecha-fin {
+            font-size: 0.9em;
+            color: #ffffff;
+            text-align: right;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="login-section" class="active">
-            <h1>Iniciar Sesión</h1>
-            <div id="profile-photo-container">
-                <img id="profile-photo-preview" src="https://via.placeholder.com/100" alt="Vista previa de la foto de perfil">
-                <input type="file" id="profile-photo-upload" accept="image/*" style="display: none;">
-                <button id="upload-profile-btn">Subir Foto de Perfil</button>
-            </div>
-            <input type="text" id="username" placeholder="Nombre de usuario">
-            <input type="password" id="password" placeholder="Contraseña">
-            <div id="login-buttons">
-                <button id="login-btn">Entrar</button>
-                <button id="register-btn">Crear cuenta</button>
-            </div>
-        </div>
 
-        <div id="blog-section">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1>Mi Blog</h1>
-                <div id="balance-display">Monedas: <span id="coins-count">0</span></div>
+    <h1>Anuncios Destacados</h1>
+
+    <div class="contenedor-anuncios">
+        
+        <a href="https://wa.me/584129585808" class="anuncio-link">
+            <div class="anuncio">
+                <div class="imagen-anuncio">
+                    <img src="https://cdn.discordapp.com/attachments/1348125258925998111/1410778865252565093/hola.png?ex=68b241b4&is=68b0f034&hm=f0be1d0fd83f5e479d03362cf6db3b8022a1d781b9816154ed1cab6cee6814d9" alt="Imagen del anuncio">
+                </div>
+                <h2>Lanzamiento de Producto</h2>
+                <p>¡Prepárate para el lanzamiento de nuestro producto más esperado! Descubre la innovación que cambiará las reglas del juego. ¡No te lo pierdas!</p>
+                <div class="fecha-fin">Fecha límite: 12/09/2025 2:45 pm</div>
+                <div class="temporizador" data-tiempo-fin="2025-09-12T14:45:00"></div>
             </div>
-            <textarea id="post-content" rows="4" placeholder="¿Qué quieres publicar?"></textarea>
-            <div id="post-options">
-                <input type="file" id="image-upload" accept="image/*" style="display: none;">
-                <button id="image-upload-btn">Subir Foto (50c)</button>
-                <button id="publish-btn">Publicar</button>
+        </a>
+        <a href="https://wa.me/584129585808" class="anuncio-link">
+            <div class="anuncio">
+                <div class="imagen-anuncio">
+                    <img src="https://via.placeholder.com/400x200?text=Evento+Especial" alt="Imagen del evento">
+                </div>
+                <h2>Evento de Lujo</h2>
+                <p>Únete a nuestro exclusivo evento de arte en línea. Obras únicas y una experiencia inolvidable te esperan. ¡Reserva tu lugar ahora!</p>
+                <div class="fecha-fin">Fecha límite: 10/10/2025 10:00 am</div>
+                <div class="temporizador" data-tiempo-fin="2025-10-10T10:00:00"></div>
             </div>
-            <div id="feed">
+        </a>
+        <a href="https://wa.me/584129585808" class="anuncio-link">
+            <div class="anuncio">
+                <div class="imagen-anuncio">
+                    <img src="https://via.placeholder.com/400x200?text=Producto+Nuevo" alt="Imagen del producto">
+                </div>
+                <h2>Nueva Colección de Otoño</h2>
+                <p>Descubre los colores y texturas de la nueva temporada. Prendas de alta calidad con un toque artesanal. ¡Disponibles por tiempo limitado!</p>
+                <div class="fecha-fin">Fecha límite: 25/11/2025 5:00 pm</div>
+                <div class="temporizador" data-tiempo-fin="2025-11-25T17:00:00"></div>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                <button id="delete-account-btn">Eliminar cuenta</button>
-                <button id="logout-btn">Cerrar sesión</button>
-            </div>
+        </a>
         </div>
-    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Elementos del DOM
-            const loginSection = document.getElementById('login-section');
-            const blogSection = document.getElementById('blog-section');
-            const loginBtn = document.getElementById('login-btn');
-            const registerBtn = document.getElementById('register-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const deleteAccountBtn = document.getElementById('delete-account-btn');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const publishBtn = document.getElementById('publish-btn');
-            const postContentTextarea = document.getElementById('post-content');
-            const feed = document.getElementById('feed');
-            const coinsCountDisplay = document.getElementById('coins-count');
-            const imageUploadBtn = document.getElementById('image-upload-btn');
-            const imageUploadInput = document.getElementById('image-upload');
-            const profilePhotoPreview = document.getElementById('profile-photo-preview');
-            const profilePhotoUpload = document.getElementById('profile-photo-upload');
-            const uploadProfileBtn = document.getElementById('upload-profile-btn');
+        // Lógica del temporizador con JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const temporizadores = document.querySelectorAll('.temporizador');
 
-            // Constantes
-            const PHOTO_COST = 50;
-            const COINS_PER_POSTS = 100;
-            const POSTS_FOR_REWARD = 5;
-            const DEFAULT_PROFILE_PHOTO = 'https://via.placeholder.com/100';
+            temporizadores.forEach(temp => {
+                const fechaFin = new Date(temp.dataset.tiempoFin).getTime();
 
-            // Funciones del localStorage
-            const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
-            const getUsers = () => JSON.parse(localStorage.getItem('users')) || {};
-            const savePosts = (posts) => localStorage.setItem('posts', JSON.stringify(posts));
-            const getPosts = () => JSON.parse(localStorage.getItem('posts')) || [];
-            const getCurrentUser = () => localStorage.getItem('currentUser');
-            const setCurrentUser = (user) => localStorage.setItem('currentUser', user);
-            const getUserData = (username) => {
-                const users = getUsers();
-                return users[username];
-            };
-            const saveUserData = (username, data) => {
-                const users = getUsers();
-                users[username] = data;
-                saveUsers(users);
-            };
+                const actualizarTemporizador = () => {
+                    const ahora = new Date().getTime();
+                    const distancia = fechaFin - ahora;
 
-            const updateBalanceDisplay = () => {
-                const currentUser = getCurrentUser();
-                if (currentUser) {
-                    const userData = getUserData(currentUser);
-                    coinsCountDisplay.textContent = userData.coins;
-                }
-            };
-
-            const renderPosts = () => {
-                const posts = getPosts();
-                const currentUser = getCurrentUser();
-                feed.innerHTML = '';
-                posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                posts.forEach(post => {
-                    const postDiv = document.createElement('div');
-                    postDiv.classList.add('post');
-                    const isAuthor = post.user === currentUser;
-                    const userData = getUserData(post.user);
-                    const profilePhotoURL = userData ? userData.profilePhoto : DEFAULT_PROFILE_PHOTO;
-                    postDiv.innerHTML = `
-                        <h3>
-                            <img src="${profilePhotoURL}" alt="Foto de perfil de ${post.user}" class="profile-photo-sm">
-                            ${post.user}
-                            <span>${new Date(post.timestamp).toLocaleString()}</span>
-                        </h3>
-                        <p>${post.content}</p>
-                        ${post.image ? `<img src="${post.image}" alt="Imagen del post">` : ''}
-                        <div class="actions">
-                            <button class="reply-btn" data-post-id="${post.id}">Responder</button>
-                            ${isAuthor ? `<button class="delete-btn" data-post-id="${post.id}"><i class="fas fa-trash-alt"></i></button>` : ''}
-                        </div>
-                        <div class="reply-section" id="reply-section-${post.id}">
-                            <textarea class="reply-textarea" data-post-id="${post.id}" rows="2" placeholder="Escribe tu respuesta..."></textarea>
-                            <button class="submit-reply-btn" data-post-id="${post.id}">Enviar respuesta</button>
-                        </div>
-                        <div class="replies" id="replies-for-${post.id}"></div>
-                    `;
-                    feed.appendChild(postDiv);
-                    renderReplies(post.id, post.replies || []);
-                });
-            };
-
-            const renderReplies = (postId, replies) => {
-                const repliesContainer = document.getElementById(`replies-for-${postId}`);
-                if (!repliesContainer) return;
-                repliesContainer.innerHTML = '';
-                replies.forEach(reply => {
-                    const replyDiv = document.createElement('div');
-                    replyDiv.classList.add('reply');
-                    replyDiv.innerHTML = `
-                        <h4>En respuesta por: ${reply.user}</h4>
-                        <p>${reply.content}</p>
-                    `;
-                    repliesContainer.appendChild(replyDiv);
-                });
-            };
-
-            // Manejadores de eventos
-            uploadProfileBtn.addEventListener('click', () => {
-                profilePhotoUpload.click();
-            });
-
-            profilePhotoUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        profilePhotoPreview.src = event.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            loginBtn.addEventListener('click', () => {
-                const username = usernameInput.value;
-                const password = passwordInput.value;
-                const users = getUsers();
-                const userData = users[username];
-                if (userData && userData.password === password) {
-                    setCurrentUser(username);
-                    loginSection.classList.remove('active');
-                    blogSection.classList.add('active');
-                    updateBalanceDisplay();
-                    renderPosts();
-                } else {
-                    alert('Nombre de usuario o contraseña incorrectos.');
-                }
-            });
-
-            registerBtn.addEventListener('click', () => {
-                const username = usernameInput.value;
-                const password = passwordInput.value;
-                const users = getUsers();
-                if (username.length < 3 || password.length < 3) {
-                    alert('El nombre de usuario y la contraseña deben tener al menos 3 caracteres.');
-                    return;
-                }
-                if (users[username]) {
-                    alert('Este nombre de usuario ya existe. Por favor, elige otro.');
-                } else {
-                    const profilePhoto = profilePhotoPreview.src;
-                    users[username] = { password, coins: 0, postCount: 0, profilePhoto };
-                    saveUsers(users);
-                    alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
-                    usernameInput.value = '';
-                    passwordInput.value = '';
-                    profilePhotoPreview.src = DEFAULT_PROFILE_PHOTO;
-                }
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                localStorage.removeItem('currentUser');
-                loginSection.classList.add('active');
-                blogSection.classList.remove('active');
-                usernameInput.value = '';
-                passwordInput.value = '';
-            });
-
-            deleteAccountBtn.addEventListener('click', () => {
-                if (confirm('Advertencia: ¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.')) {
-                    const currentUser = getCurrentUser();
-                    if (currentUser) {
-                        const users = getUsers();
-                        delete users[currentUser];
-                        saveUsers(users);
-
-                        let posts = getPosts();
-                        posts = posts.filter(post => post.user !== currentUser);
-                        savePosts(posts);
-
-                        localStorage.removeItem('currentUser');
-                        loginSection.classList.add('active');
-                        blogSection.classList.remove('active');
-                        alert('Tu cuenta ha sido eliminada con éxito.');
+                    if (distancia < 0) {
+                        temp.textContent = "TERMINADO";
+                        temp.classList.add('terminado');
+                        temp.classList.remove('temporizador');
+                        return;
                     }
-                }
-            });
 
-            publishBtn.addEventListener('click', () => {
-                const content = postContentTextarea.value.trim();
-                const user = getCurrentUser();
-                if (!content) {
-                    alert('Por favor, escribe algo para publicar.');
-                    return;
-                }
-                const posts = getPosts();
-                const newPost = {
-                    id: Date.now(),
-                    user,
-                    content,
-                    image: null,
-                    timestamp: new Date().toISOString(),
-                    replies: []
+                    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                    const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                    const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                    temp.innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
                 };
-                posts.push(newPost);
-                savePosts(posts);
-                postContentTextarea.value = '';
-                let userData = getUserData(user);
-                userData.postCount = (userData.postCount || 0) + 1;
-                if (userData.postCount % POSTS_FOR_REWARD === 0) {
-                    userData.coins += COINS_PER_POSTS;
-                    alert(`¡Felicidades! Has hecho ${userData.postCount} publicaciones y has ganado ${COINS_PER_POSTS} monedas.`);
-                }
-                saveUserData(user, userData);
-                updateBalanceDisplay();
-                renderPosts();
+
+                // Actualiza el temporizador cada segundo
+                setInterval(actualizarTemporizador, 1000);
+                // Llama una vez al inicio para evitar un retraso de 1 segundo
+                actualizarTemporizador();
             });
-            
-            imageUploadBtn.addEventListener('click', () => {
-                imageUploadInput.click();
-            });
-
-            imageUploadInput.addEventListener('change', () => {
-                const file = imageUploadInput.files[0];
-                if (!file) return;
-                const user = getCurrentUser();
-                let userData = getUserData(user);
-                if (userData.coins < PHOTO_COST) {
-                    alert('No tienes suficientes monedas para enviar una foto. Necesitas ' + PHOTO_COST + ' monedas.');
-                    imageUploadInput.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageData = e.target.result;
-                    const posts = getPosts();
-                    const newPost = {
-                        id: Date.now(),
-                        user,
-                        content: '',
-                        image: imageData,
-                        timestamp: new Date().toISOString(),
-                        replies: []
-                    };
-                    posts.push(newPost);
-                    savePosts(posts);
-                    userData.coins -= PHOTO_COST;
-                    saveUserData(user, userData);
-                    updateBalanceDisplay();
-                    renderPosts();
-                    imageUploadInput.value = '';
-                };
-                reader.readAsDataURL(file);
-            });
-
-            feed.addEventListener('click', (event) => {
-                const target = event.target.closest('button');
-                if (!target) return;
-                const postId = parseInt(target.dataset.postId);
-                if (target.classList.contains('delete-btn')) {
-                    if (confirm('¿Estás seguro de que quieres eliminar este mensaje?')) {
-                        deletePost(postId);
-                    }
-                } else if (target.classList.contains('reply-btn')) {
-                    toggleReplySection(postId);
-                } else if (target.classList.contains('submit-reply-btn')) {
-                    submitReply(postId);
-                }
-            });
-
-            const deletePost = (postId) => {
-                let posts = getPosts();
-                posts = posts.filter(post => post.id !== postId);
-                savePosts(posts);
-                renderPosts();
-            };
-
-            const toggleReplySection = (postId) => {
-                const replySection = document.getElementById(`reply-section-${postId}`);
-                if (replySection) {
-                    replySection.classList.toggle('active');
-                }
-            };
-            
-            const submitReply = (postId) => {
-                const replyTextarea = document.querySelector(`#reply-section-${postId} .reply-textarea`);
-                const replyContent = replyTextarea.value.trim();
-                const user = getCurrentUser();
-                if (replyContent && user) {
-                    const posts = getPosts();
-                    const postToReply = posts.find(post => post.id === postId);
-                    if (postToReply) {
-                        const newReply = {
-                            user,
-                            content: replyContent,
-                            timestamp: new Date().toISOString()
-                        };
-                        postToReply.replies = postToReply.replies || [];
-                        postToReply.replies.push(newReply);
-                        savePosts(posts);
-                        renderPosts();
-                        replyTextarea.value = '';
-                    }
-                } else {
-                    alert('Por favor, escribe algo para responder.');
-                }
-            };
-
-            const currentUser = getCurrentUser();
-            if (currentUser) {
-                loginSection.classList.remove('active');
-                blogSection.classList.add('active');
-                updateBalanceDisplay();
-                renderPosts();
-            }
         });
     </script>
 </body>
