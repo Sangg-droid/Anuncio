@@ -64,7 +64,7 @@
             color: #ffffff;
             line-height: 1.6;
             padding: 0 10px;
-            text-align: left; /* Alineamos los párrafos a la izquierda */
+            text-align: left;
         }
         
         /* Estilos de los anuncios */
@@ -98,7 +98,7 @@
             border-bottom: 2px solid #ffffff;
             padding-bottom: 10px;
             margin-bottom: 15px;
-            text-align: left; /* Alineamos los títulos a la izquierda */
+            text-align: left;
         }
 
         /* Estilos para la imagen del anuncio */
@@ -176,7 +176,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 2px solid #b36e41;
-            cursor: pointer; /* Agrega un cursor de puntero para indicar que es un botón */
+            cursor: pointer;
         }
 
         .cta-button:hover {
@@ -187,7 +187,7 @@
 
         /* Estilos para los globos de texto emergentes (popups) */
         .popup {
-            display: none; /* Oculto por defecto */
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -198,7 +198,7 @@
             background-color: #b36e41;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            z-index: 1000;
             text-align: center;
         }
 
@@ -266,8 +266,16 @@
             .contenedor-anuncios {
                 grid-template-columns: 1fr;
             }
+            /* Ajuste para que las imágenes se vean bien en móviles */
             .anuncio {
-                height: 380px;
+                height: auto;
+            }
+            .imagen-anuncio {
+                height: 80vw; /* Usa el 80% del ancho de la vista para la altura */
+            }
+            .imagen-anuncio img {
+                object-fit: contain; /* Ajusta la imagen completa sin recortarla */
+                padding: 10px; /* Añade un poco de espacio para que no se pegue al borde */
             }
             .anuncio h2, p {
                 text-align: left;
@@ -329,7 +337,7 @@
                 <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
                 <div class="info-anuncio">
-                    <div class="fecha-fin">Fecha límite: Por determinar</div>
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
                     <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
                 </div>
             </div>
@@ -343,7 +351,7 @@
                 <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
                 <div class="info-anuncio">
-                    <div class="fecha-fin">Fecha límite: Por determinar</div>
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
                     <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
                 </div>
             </div>
@@ -357,7 +365,7 @@
                 <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
                 <div class="info-anuncio">
-                    <div class="fecha-fin">Fecha límite: Por determinar</div>
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
                     <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
                 </div>
             </div>
