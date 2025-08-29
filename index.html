@@ -276,7 +276,9 @@
                 border-radius: 15px; /* Bordes redondeados para el contenedor del anuncio */
                 overflow: hidden; /* Muy importante para que los bordes redondeados recorten la imagen */
                 position: relative; /* Necesario para z-index */
-                z-index: 0; /* El anuncio estará por debajo de la imagen en esta configuración */
+                z-index: 1; /* El anuncio estará por encima de la imagen en esta configuración */
+                border: 10px solid #b36e41; /* Borde más grande y visible */
+                box-sizing: border-box; /* Incluye el borde en el tamaño total */
             }
             .imagen-anuncio {
                 width: 100%;
@@ -284,13 +286,10 @@
                 display: flex; /* Para centrar la imagen dentro de su contenedor */
                 justify-content: center;
                 align-items: center;
-                border: 4px solid #b36e41; /* Borde del mismo color que el fondo del anuncio */
-                border-top-left-radius: 12px; /* Redondeo de los bordes superiores de la imagen */
-                border-top-right-radius: 12px;
-                margin-top: -4px; /* Mueve la imagen 4px hacia arriba para que cubra el borde superior del anuncio */
+                border: none; /* Quitamos cualquier borde del contenedor de la imagen */
+                margin-top: -20px; /* Mueve la imagen 20px hacia arriba para que se meta más debajo del borde superior del anuncio */
                 position: relative; /* Necesario para z-index */
-                z-index: 1; /* La imagen estará por encima del anuncio */
-                box-sizing: border-box; /* Incluye el borde en el tamaño total */
+                z-index: 0; /* La imagen estará por debajo del anuncio */
             }
             .imagen-anuncio img {
                 width: 100%;
