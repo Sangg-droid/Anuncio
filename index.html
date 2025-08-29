@@ -17,10 +17,10 @@
             align-items: center;
         }
 
+        /* Contenedor de los anuncios */
         .contenedor-anuncios {
             max-width: 1400px;
-            width: 200%;   /*LA ALTURA DEL CONTENEDOR*/
-            height: 700px;  
+            width: 100%;
             display: grid;
             gap: 20px;
             grid-template-columns: repeat(4, 1fr);
@@ -31,14 +31,15 @@
             text-align: center;
             margin-bottom: 40px;
             font-size: 2.5em;
-            font-weight: 600; /* Texto del título más grueso */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra sutil al texto */
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         p {
             color: #ffffff;
             line-height: 1.6;
             padding: 0 10px;
+            text-align: left; /* Alineamos los párrafos a la izquierda */
         }
         
         /* Estilos de los anuncios */
@@ -54,10 +55,10 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 480px;
             box-sizing: border-box;
             background-color: #b36e41; /* Fondo de los anuncios: Raw Sienna */
-            overflow: hidden; /* Esto es importante para que los bordes redondeados funcionen bien */
+            overflow: hidden;
         }
 
         .anuncio:hover {
@@ -67,55 +68,64 @@
 
         .anuncio h2 {
             color: #ffffff;
-            margin: 10px 10px 0;
+            margin: 15px 10px 0;
             font-size: 1.5em;
             border-bottom: 2px solid #ffffff;
             padding-bottom: 10px;
             margin-bottom: 15px;
+            text-align: left; /* Alineamos los títulos a la izquierda */
         }
 
         /* Estilos para la imagen del anuncio */
         .imagen-anuncio {
             width: 100%;
-            height: 250px; /* Se ha ajustado la altura a 240px */
+            height: 35%;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
             margin-bottom: 0;
-            border: 4px solid #b36e41; /* Borde del color del anuncio */
-            box-sizing: border-box; /* Incluye el padding y el border en el tamaño total */
-            overflow: hidden; /* Asegura que la imagen se mantenga dentro del borde redondeado */
+            border: 4px solid #b36e41;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .imagen-anuncio img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block; /* Elimina cualquier espacio extra debajo de la imagen */
+            display: block;
         }
         
+        /* Estilos para el contenedor de información */
+        .info-anuncio {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            padding: 0 10px 5px;
+            margin-top: auto;
+            box-sizing: border-box;
+        }
+
         /* Estilos del temporizador */
         .temporizador {
             font-size: 1.2em;
             font-weight: bold;
             color: #ffffff;
-            margin-top: auto;
             text-align: right;
-            padding: 0 10px 5px;
         }
 
         .terminado {
-            color: #ff3e34; /* Flaming */
+            color: #ff3e34;
             font-size: 1.2em;
             font-weight: bold;
         }
 
         /* Estilos para mostrar la fecha de finalización */
         .fecha-fin {
-            font-size: 0.9em;
+            font-size: 0.8em;
             color: #ffffff;
-            text-align: right;
-            margin-bottom: 5px;
-            padding-right: 10px;
+            text-align: left;
+            white-space: nowrap;
         }
 
         /* Contenedor del botón flotante */
@@ -123,14 +133,14 @@
             width: 100%;
             max-width: 1400px;
             display: flex;
-            justify-content: flex-end; /* Alinea el contenido a la derecha */
+            justify-content: flex-end;
             margin-top: 20px;
         }
 
         /* Estilos para el botón */
         .cta-button {
             display: inline-block;
-            background-color: #b36e41; /* Color de fondo del anuncio para que se parezca */
+            background-color: #b36e41;
             color: #ffffff;
             padding: 12px 24px;
             border-radius: 8px;
@@ -139,13 +149,58 @@
             font-size: 1em;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #b36e41; /* Borde sutil para que se destaque */
+            border: 2px solid #b36e41;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            background-color: #c9825b; /* Un color ligeramente más claro en hover */
+            background-color: #c9825b;
+        }
+
+        /* --- MEDIA QUERIES --- */
+        /* Para pantallas de hasta 1200px */
+        @media (max-width: 1200px) {
+            .contenedor-anuncios {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .anuncio {
+                height: 440px;
+            }
+        }
+
+        /* Para pantallas de hasta 900px */
+        @media (max-width: 900px) {
+            .contenedor-anuncios {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .anuncio {
+                height: 400px;
+            }
+        }
+
+        /* Para pantallas de hasta 600px (móviles) */
+        @media (max-width: 600px) {
+            .contenedor-anuncios {
+                grid-template-columns: 1fr;
+            }
+            .anuncio {
+                height: 380px;
+            }
+            .anuncio h2, p {
+                text-align: left;
+            }
+            .info-anuncio {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+            .temporizador {
+                margin-left: 0;
+            }
+            .fecha-fin {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -160,10 +215,12 @@
                 <div class="imagen-anuncio">
                     <img src="https://media.discordapp.net/attachments/1348125258925998111/1410789623759634432/unnamed.jpg?ex=68b24bb9&is=68b0fa39&hm=d6c44f55c8d03b7e6b390d9e094e018daf05049314e36df36a0e121980ed5f0b&=&format=webp" alt="Imagen del anuncio">
                 </div>
-                <h2>¡Apoyanos!</h2>
-                <p>Apoyanos entrando a nuestra liga Fantasy</p>
-                <div class="fecha-fin">Fecha límite: Jamás</div>
-                <div class="temporizador" data-tiempo-fin="3000-09-12T14:45:00"></div>
+                <h2>¡Apóyanos!</h2>
+                <p>Apóyanos entrando a nuestra liga Fantasy</p>
+                <div class="info-anuncio">
+                    <div class="fecha-fin">Fecha límite: Jamás</div>
+                    <div class="temporizador" data-tiempo-fin="3000-09-12T14:45:00"></div>
+                </div>
             </div>
         </a>
 
@@ -172,10 +229,12 @@
                 <div class="imagen-anuncio">
                     <img src="https://media.discordapp.net/attachments/1348125258925998111/1410800466043863150/Captura_de_pantalla_2025-08-28_213715.png?ex=68b255d2&is=68b10452&hm=8e03502a7da6b32ef3ec24feb3ffb04dff18cb4aa05c1d7ea745c179061aa124&=&format=webp&quality=lossless" alt="Imagen del evento">
                 </div>
-                <h2>Espacio disponible</h2>
+                <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
-                <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
-                <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                <div class="info-anuncio">
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
+                    <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                </div>
             </div>
         </a>
         
@@ -184,10 +243,12 @@
                 <div class="imagen-anuncio">
                     <img src="https://media.discordapp.net/attachments/1348125258925998111/1410800466043863150/Captura_de_pantalla_2025-08-28_213715.png?ex=68b255d2&is=68b10452&hm=8e03502a7da6b32ef3ec24feb3ffb04dff18cb4aa05c1d7ea745c179061aa124&=&format=webp&quality=lossless" alt="Imagen del producto">
                 </div>
-                <h2>Espacio disponible</h2>
+                <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
-                <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
-                <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                <div class="info-anuncio">
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
+                    <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                </div>
             </div>
         </a>
 
@@ -196,10 +257,12 @@
                 <div class="imagen-anuncio">
                     <img src="https://media.discordapp.net/attachments/1348125258925998111/1410800466043863150/Captura_de_pantalla_2025-08-28_213715.png?ex=68b255d2&is=68b10452&hm=8e03502a7da6b32ef3ec24feb3ffb04dff18cb4aa05c1d7ea745c179061aa124&=&format=webp&quality=lossless" alt="Imagen del producto">
                 </div>
-                <h2>Espacio disponible</h2>
+                <h2>Tu anuncio puede estar aquí</h2>
                 <p>Espacio disponible</p>
-                <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
-                <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                <div class="info-anuncio">
+                    <div class="fecha-fin">Fecha límite: Hasta que lo obtengan</div>
+                    <div class="temporizador" data-tiempo-fin="2026-11-11T17:00:00"></div>
+                </div>
             </div>
         </a>
     </div>
@@ -244,5 +307,3 @@
     </script>
 </body>
 </html>
-
-
