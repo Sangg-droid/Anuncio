@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anuncios Creativos</title>
+    <title>PosTT</title>
     <style>
         /* Estilos generales y de tipografía */
         body {
@@ -15,6 +15,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        /* Estilos de la sección de bienvenida */
+        .bienvenida-container {
+            width: 100%;
+            max-width: 1400px;
+            text-align: center;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            background-color: #b36e41; /* Raw Sienna */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+        }
+
+        .bienvenida-container h2 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .bienvenida-container p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            padding: 0 20px;
+            text-align: center;
         }
 
         /* Contenedor de los anuncios */
@@ -128,16 +153,17 @@
             white-space: nowrap;
         }
 
-        /* Contenedor del botón flotante */
+        /* Contenedor de botones flotantes */
         .button-container {
             width: 100%;
             max-width: 1400px;
             display: flex;
             justify-content: flex-end;
+            gap: 15px;
             margin-top: 20px;
         }
 
-        /* Estilos para el botón */
+        /* Estilos para los botones */
         .cta-button {
             display: inline-block;
             background-color: #b36e41;
@@ -150,6 +176,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 2px solid #b36e41;
+            cursor: pointer; /* Agrega un cursor de puntero para indicar que es un botón */
         }
 
         .cta-button:hover {
@@ -158,8 +185,65 @@
             background-color: #c9825b;
         }
 
+        /* Estilos para los globos de texto emergentes (popups) */
+        .popup {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            padding: 30px;
+            background-color: #b36e41;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            text-align: center;
+        }
+
+        .popup h3 {
+            margin-top: 0;
+            font-size: 1.8em;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .popup p {
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .popup ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .popup li {
+            font-size: 1.1em;
+            padding: 5px 0;
+        }
+        
+        .popup button {
+            margin-top: 15px;
+            font-size: 0.9em;
+            padding: 8px 16px;
+        }
+
+        /* Fondo semi-transparente para el globo de texto */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
         /* --- MEDIA QUERIES --- */
-        /* Para pantallas de hasta 1200px */
         @media (max-width: 1200px) {
             .contenedor-anuncios {
                 grid-template-columns: repeat(3, 1fr);
@@ -169,7 +253,6 @@
             }
         }
 
-        /* Para pantallas de hasta 900px */
         @media (max-width: 900px) {
             .contenedor-anuncios {
                 grid-template-columns: repeat(2, 1fr);
@@ -179,7 +262,6 @@
             }
         }
 
-        /* Para pantallas de hasta 600px (móviles) */
         @media (max-width: 600px) {
             .contenedor-anuncios {
                 grid-template-columns: 1fr;
@@ -201,12 +283,27 @@
             .fecha-fin {
                 text-align: center;
             }
+            .bienvenida-container {
+                padding: 20px;
+            }
+            .button-container {
+                justify-content: center;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>Anuncios Destacados</h1>
+    <div class="bienvenida-container">
+        <h2>Bienvenido a posTT!</h2>
+        <p>
+            Aquí podrás poner actividades que quieras realizar. <br>
+            ¡Desde salidas, hasta ventas!
+        </p>
+    </div>
+
+    <h1>Anuncios De Hoy</h1>
 
     <div class="contenedor-anuncios">
         
@@ -218,7 +315,7 @@
                 <h2>¡Apóyanos!</h2>
                 <p>Apóyanos entrando a nuestra liga Fantasy</p>
                 <div class="info-anuncio">
-                    <div class="fecha-fin">Fecha límite: Jamás⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</div>
+                    <div class="fecha-fin">Fecha límite: Jamás</div>
                     <div class="temporizador" data-tiempo-fin="2026-11-12T14:45:00"></div>
                 </div>
             </div>
@@ -268,14 +365,32 @@
     </div>
 
     <div class="button-container">
+        <button id="btn-about" class="cta-button">Sobre nosotros</button>
         <a href="https://wa.me/584121802230" class="cta-button" role="button">Contáctanos</a>
     </div>
+
+    <div id="about-popup" class="popup">
+        <h3>Sobre Nosotros</h3>
+        <p>Somos una plataforma dedicada a conectar personas a través de actividades y anuncios de interés. Desde eventos locales hasta ventas de productos, facilitamos que la comunidad comparta y descubra lo que está sucediendo a su alrededor. ¡Únete y comienza a postear!</p>
+        <button id="btn-credits" class="cta-button">Créditos</button>
+    </div>
+
+    <div id="credits-popup" class="popup">
+        <h3>Créditos</h3>
+        <p>Un agradecimiento especial a:</p>
+        <ul>
+            <li>Killer</li>
+            <li>Uzcategui</li>
+            <li>Santiago</li>
+        </ul>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
 
     <script>
         // Lógica del temporizador con JavaScript
         document.addEventListener('DOMContentLoaded', function() {
             const temporizadores = document.querySelectorAll('.temporizador');
-
             temporizadores.forEach(temp => {
                 const fechaFin = new Date(temp.dataset.tiempoFin).getTime();
 
@@ -298,11 +413,46 @@
                     temp.innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
                 };
 
-                // Actualiza el temporizador cada segundo
                 setInterval(actualizarTemporizador, 1000);
-                // Llama una vez al inicio para evitar un retraso de 1 segundo
                 actualizarTemporizador();
             });
+
+            // Lógica para los popups
+            const aboutBtn = document.getElementById('btn-about');
+            const aboutPopup = document.getElementById('about-popup');
+            const creditsBtn = document.getElementById('btn-credits');
+            const creditsPopup = document.getElementById('credits-popup');
+            const overlay = document.getElementById('overlay');
+
+            // Función para alternar el popup de "Sobre Nosotros"
+            function toggleAboutPopup() {
+                if (aboutPopup.style.display === 'block') {
+                    aboutPopup.style.display = 'none';
+                    overlay.style.display = 'none';
+                } else {
+                    aboutPopup.style.display = 'block';
+                    overlay.style.display = 'block';
+                }
+            }
+
+            // Función para mostrar el popup de "Créditos"
+            function showCreditsPopup() {
+                aboutPopup.style.display = 'none';
+                creditsPopup.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+
+            // Función para cerrar todos los popups
+            function closeAllPopups() {
+                aboutPopup.style.display = 'none';
+                creditsPopup.style.display = 'none';
+                overlay.style.display = 'none';
+            }
+
+            // Eventos de clic
+            aboutBtn.addEventListener('click', toggleAboutPopup);
+            creditsBtn.addEventListener('click', showCreditsPopup);
+            overlay.addEventListener('click', closeAllPopups);
         });
     </script>
 </body>
