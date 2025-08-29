@@ -84,6 +84,8 @@
             box-sizing: border-box;
             background-color: #b36e41; /* Fondo de los anuncios: Raw Sienna */
             overflow: hidden;
+            position: relative; /* Necesario para z-index */
+            z-index: 1; /* Asegura que los bordes del anuncio estén por encima */
         }
 
         .anuncio:hover {
@@ -111,6 +113,8 @@
             border: 4px solid #b36e41;
             box-sizing: border-box;
             overflow: hidden;
+            position: relative; /* Necesario para z-index */
+            z-index: 0; /* Asegura que la imagen esté debajo del borde del anuncio */
         }
 
         .imagen-anuncio img {
@@ -269,22 +273,27 @@
             /* Ajuste para que las imágenes se vean bien en móviles */
             .anuncio {
                 height: auto;
+                border-radius: 15px; /* Bordes redondeados para el contenedor del anuncio */
             }
             .imagen-anuncio {
-                height: 80vw; /* Usa el 80% del ancho de la vista para la altura */
-                display: flex; /* Añadido para centrar el contenido de .imagen-anuncio */
-                justify-content: center; /* Centra horizontalmente */
-                align-items: center; /* Centra verticalmente */
+                height: 70vw; /* Usa el 70% del ancho de la vista para la altura */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none; /* Quitamos el borde del contenedor de la imagen */
+                border-top-left-radius: 10px; /* Bordes un poco menos redondeados para la imagen */
+                border-top-right-radius: 10px;
+                margin-bottom: -15px; /* Ajusta la imagen para que se meta un poco en el borde */
             }
             .imagen-anuncio img {
-                width: auto; /* Permite que la imagen tome su ancho natural o se ajuste */
-                max-width: 100%; /* Asegura que no se desborde del contenedor */
-                height: auto; /* Permite que la imagen tome su altura natural o se ajuste */
-                max-height: 100%; /* Asegura que no se desborde del contenedor */
-                object-fit: contain; /* Ajusta la imagen completa sin recortarla */
-                margin: 0 auto; /* Centra la imagen horizontalmente dentro de .imagen-anuncio */
-                display: block; /* Asegura que margin auto funcione correctamente */
-                border: none; /* Elimina cualquier posible borde */
+                width: auto;
+                max-width: 100%;
+                height: auto;
+                max-height: 100%;
+                object-fit: contain;
+                margin: 0 auto;
+                display: block;
+                border: none; /* Elimina cualquier posible borde de la imagen en sí */
             }
             .anuncio h2, p {
                 text-align: left;
@@ -474,4 +483,5 @@
     </script>
 </body>
 </html>
+
 
