@@ -272,10 +272,19 @@
             }
             .imagen-anuncio {
                 height: 80vw; /* Usa el 80% del ancho de la vista para la altura */
+                display: flex; /* Añadido para centrar el contenido de .imagen-anuncio */
+                justify-content: center; /* Centra horizontalmente */
+                align-items: center; /* Centra verticalmente */
             }
             .imagen-anuncio img {
+                width: auto; /* Permite que la imagen tome su ancho natural o se ajuste */
+                max-width: 100%; /* Asegura que no se desborde del contenedor */
+                height: auto; /* Permite que la imagen tome su altura natural o se ajuste */
+                max-height: 100%; /* Asegura que no se desborde del contenedor */
                 object-fit: contain; /* Ajusta la imagen completa sin recortarla */
-                padding: 10px; /* Añade un poco de espacio para que no se pegue al borde */
+                margin: 0 auto; /* Centra la imagen horizontalmente dentro de .imagen-anuncio */
+                display: block; /* Asegura que margin auto funcione correctamente */
+                border: none; /* Elimina cualquier posible borde */
             }
             .anuncio h2, p {
                 text-align: left;
@@ -465,3 +474,4 @@
     </script>
 </body>
 </html>
+
