@@ -272,28 +272,28 @@
             }
             /* Ajuste para que las imágenes se vean bien en móviles */
             .anuncio {
-                height: auto;
+                height: auto; /* Altura automática para que el contenido se ajuste */
                 border-radius: 15px; /* Bordes redondeados para el contenedor del anuncio */
+                overflow: hidden; /* Muy importante para que los bordes redondeados recorten la imagen */
+                z-index: 1; /* Asegura que el contenedor del anuncio esté por encima de la imagen */
             }
             .imagen-anuncio {
-                height: 70vw; /* Usa el 70% del ancho de la vista para la altura */
-                display: flex;
+                width: 100%;
+                height: 50vw; /* Altura de la imagen proporcional al ancho de la pantalla */
+                display: flex; /* Para centrar la imagen dentro de su contenedor */
                 justify-content: center;
                 align-items: center;
                 border: none; /* Quitamos el borde del contenedor de la imagen */
-                border-top-left-radius: 10px; /* Bordes un poco menos redondeados para la imagen */
-                border-top-right-radius: 10px;
-                margin-bottom: -15px; /* Ajusta la imagen para que se meta un poco en el borde */
+                margin-bottom: -15px; /* Ajusta la imagen para que se "meta" un poco debajo del borde del anuncio */
+                /* Asegúrate de que no tenga border-radius aquí para que el del anuncio se vea */
             }
             .imagen-anuncio img {
-                width: auto;
-                max-width: 100%;
-                height: auto;
-                max-height: 100%;
-                object-fit: contain;
-                margin: 0 auto;
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* La imagen cubrirá el área, recortando si es necesario */
                 display: block;
                 border: none; /* Elimina cualquier posible borde de la imagen en sí */
+                /* Ya no necesitamos max-width/max-height, margin:auto, etc. con object-fit:cover y height/width:100% */
             }
             .anuncio h2, p {
                 text-align: left;
@@ -483,5 +483,3 @@
     </script>
 </body>
 </html>
-
-
