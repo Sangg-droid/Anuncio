@@ -275,7 +275,8 @@
                 height: auto; /* Altura automática para que el contenido se ajuste */
                 border-radius: 15px; /* Bordes redondeados para el contenedor del anuncio */
                 overflow: hidden; /* Muy importante para que los bordes redondeados recorten la imagen */
-                z-index: 1; /* Asegura que el contenedor del anuncio esté por encima de la imagen */
+                position: relative; /* Necesario para z-index */
+                z-index: 0; /* El anuncio estará por debajo de la imagen en esta configuración */
             }
             .imagen-anuncio {
                 width: 100%;
@@ -283,9 +284,13 @@
                 display: flex; /* Para centrar la imagen dentro de su contenedor */
                 justify-content: center;
                 align-items: center;
-                border: none; /* Quitamos el borde del contenedor de la imagen */
-                margin-bottom: -15px; /* Ajusta la imagen para que se "meta" un poco debajo del borde del anuncio */
-                /* Asegúrate de que no tenga border-radius aquí para que el del anuncio se vea */
+                border: 4px solid #b36e41; /* Borde del mismo color que el fondo del anuncio */
+                border-top-left-radius: 12px; /* Redondeo de los bordes superiores de la imagen */
+                border-top-right-radius: 12px;
+                margin-top: -4px; /* Mueve la imagen 4px hacia arriba para que cubra el borde superior del anuncio */
+                position: relative; /* Necesario para z-index */
+                z-index: 1; /* La imagen estará por encima del anuncio */
+                box-sizing: border-box; /* Incluye el borde en el tamaño total */
             }
             .imagen-anuncio img {
                 width: 100%;
@@ -293,7 +298,6 @@
                 object-fit: cover; /* La imagen cubrirá el área, recortando si es necesario */
                 display: block;
                 border: none; /* Elimina cualquier posible borde de la imagen en sí */
-                /* Ya no necesitamos max-width/max-height, margin:auto, etc. con object-fit:cover y height/width:100% */
             }
             .anuncio h2, p {
                 text-align: left;
